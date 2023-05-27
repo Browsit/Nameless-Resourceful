@@ -1,13 +1,15 @@
-# Nameless-Resources
-The Nameless-Resources module allows users to share zip files, GitHub projects and external links to your website, either freely or requiring a PayPal purchase.
+# Nameless-Resourceful
+The Nameless-Resourceful module allows users to share zip files, GitHub projects and external links to your website, either freely or requiring a PayPal purchase.
 
 ## Requirements
 - NamelessMC version 2.1.0
 
 ## Installation
+- Disable Nameless-Resources module by Samerton, if present
 - Upload the contents of the **upload** directory straight into your NamelessMC installation's directory
-- Activate the module in the StaffCP -> Modules tab
+- Activate this module in the StaffCP -> Modules tab
 - Set up some categories and permissions in the StaffCP -> Resources tab
 
 ## Notes
 - Any GitHub repositories you add to the Resources module must have at least one release created
+- This software is provided "as is" with absolutely no warranties, implied or otherwise.
