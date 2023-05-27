@@ -860,75 +860,71 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
             ]);
         }
         
-            // Ensure user has download permission
-            if($resource->type == 0){
-                if($user->isLoggedIn()){
-                    // Can the user download?
-                    if ($resources->canDownloadResourceFromCategory($groups, $resource->category_id)) {
+        // Ensure user has download permission
+        if($resource->type == 0){
+            if($user->isLoggedIn()){
+                // Can the user download?
+                if ($resources->canDownloadResourceFromCategory($groups, $resource->category_id)) {
+                    $smarty->assign([
+                        'DOWNLOAD' => $resource_language->get('resources', 'download'),
+                        'DOWNLOAD_URL' => URL::build('/resources/resource/' . $resource->id . '-' . URL::urlSafe($resource->name) . '/', 'do=download')
+                    ]);
+                }
+            } else {
+                $smarty->assign('LOG_IN_TO_DOWNLOAD', $resource_language->get('resources', 'log_in_to_download'));
+            }
+        } else {
+            // Can the user download?
+            if($user->isLoggedIn()){
+                if ($resources->canDownloadResourceFromCategory($groups, $resource->category_id)) {
+                    if($user->data()->id == $resource->creator_id){
+                        // Author can download their own resources
                         $smarty->assign([
                             'DOWNLOAD' => $resource_language->get('resources', 'download'),
                             'DOWNLOAD_URL' => URL::build('/resources/resource/' . $resource->id . '-' . URL::urlSafe($resource->name) . '/', 'do=download')
                         ]);
-                    }
-                } else {
-                    $smarty->assign('LOG_IN_TO_DOWNLOAD', $resource_language->get('resources', 'log_in_to_download'));
-                }
-            } else {
-                // Can the user download?
-                if($user->isLoggedIn()){
-                    if ($resources->canDownloadResourceFromCategory($groups, $resource->category_id)) {
-                        if($user->data()->id == $resource->creator_id){
-                            // Author can download their own resources
-                            $smarty->assign([
-                                'DOWNLOAD' => $resource_language->get('resources', 'download'),
-                                'DOWNLOAD_URL' => URL::build('/resources/resource/' . $resource->id . '-' . URL::urlSafe($resource->name) . '/', 'do=download')
-                            ]);
+                    } else {
+                        // Check purchases
+                        $paid = DB::getInstance()->query('SELECT status FROM nl2_resources_payments WHERE resource_id = ? AND user_id = ?', [$resource->id, $user->data()->id])->results();
 
-                        } else {
-                            // Check purchases
-                            $paid = DB::getInstance()->query('SELECT status FROM nl2_resources_payments WHERE resource_id = ? AND user_id = ?', [$resource->id, $user->data()->id])->results();
+                        if(count($paid)){
+                            $paid = $paid[0];
 
-                            if(count($paid)){
-                                $paid = $paid[0];
-
-                                if($paid->status == 1){
-                                    // Purchased
-                                    $smarty->assign([
-                                        'DOWNLOAD' => $resource_language->get('resources', 'download'),
-                                        'DOWNLOAD_URL' => URL::build('/resources/resource/' . $resource->id . '-' . URL::urlSafe($resource->name) . '/', 'do=download')
-                                    ]);
-
-                                } else if($paid->status == 0){
-                                    // Pending
-                                    $smarty->assign([
-                                        'PAYMENT_PENDING' => $resource_language->get('resources', 'payment_pending')
-                                    ]);
-
-                                } else if($paid->status == 2){
-                                    // Cancelled
-                                    $smarty->assign([
-                                        'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean($resource->price) . ' ' . Output::getClean($currency)]),
-                                        'PURCHASE_LINK' => URL::build('/resources/purchase/' . Output::getClean($resource->id) . '-' . Output::getClean(URL::urlSafe($resource->name)))
-                                    ]);
-
-                                }
-                            } else {
-                                // Needs to purchase
+                            if($paid->status == 1){
+                                // Purchased
+                                $smarty->assign([
+                                    'DOWNLOAD' => $resource_language->get('resources', 'download'),
+                                    'DOWNLOAD_URL' => URL::build('/resources/resource/' . $resource->id . '-' . URL::urlSafe($resource->name) . '/', 'do=download')
+                                ]);
+                            } else if($paid->status == 0){
+                                // Pending
+                                $smarty->assign([
+                                    'PAYMENT_PENDING' => $resource_language->get('resources', 'payment_pending')
+                                ]);
+                            } else if($paid->status == 2){
+                                // Cancelled
                                 $smarty->assign([
                                     'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean($resource->price) . ' ' . Output::getClean($currency)]),
                                     'PURCHASE_LINK' => URL::build('/resources/purchase/' . Output::getClean($resource->id) . '-' . Output::getClean(URL::urlSafe($resource->name)))
                                 ]);
                             }
+                        } else {
+                            // Needs to purchase
+                            $smarty->assign([
+                                'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean($resource->price) . ' ' . Output::getClean($currency)]),
+                                'PURCHASE_LINK' => URL::build('/resources/purchase/' . Output::getClean($resource->id) . '-' . Output::getClean(URL::urlSafe($resource->name)))
+                            ]);
                         }
                     }
-
-                } else {
-                    $smarty->assign([
-                        'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean($resource->price) . ' ' . $currency])
-                    ]);
-                    $smarty->assign('LOG_IN_TO_DOWNLOAD', $resource_language->get('resources', 'log_in_to_download'));
                 }
+
+            } else {
+                $smarty->assign([
+                    'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean($resource->price) . ' ' . $currency])
+                ]);
+                $smarty->assign('LOG_IN_TO_DOWNLOAD', $resource_language->get('resources', 'log_in_to_download'));
             }
+        }
 
         $template_file = 'resources/resource_all_versions.tpl';
         
@@ -970,7 +966,9 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
 
             if (!$latest_update->count()) {
                 Redirect::to(URL::build('/resources'));
-            } else $latest_update = $latest_update->first();
+            } else {
+                $latest_update = $latest_update->first();
+            }
 
             $author = new User($resource->creator_id);
 
