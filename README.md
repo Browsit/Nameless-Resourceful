@@ -1,5 +1,6 @@
 # Nameless-Resourceful
-The Nameless-Resourceful module allows users to share zip files, GitHub projects and external links to your website, either freely or requiring a PayPal purchase.
+The Nameless-Resourceful module allows users to share zip files, GitHub projects, and external website links, 
+either freely or by requiring a PayPal purchase. Users can easily add or remove a discount to their resources.
 
 ## Requirements
 - NamelessMC version 2.1.0
