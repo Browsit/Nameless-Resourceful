@@ -862,12 +862,16 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
         
             // Ensure user has download permission
             if($resource->type == 0){
-                // Can the user download?
-                if ($resources->canDownloadResourceFromCategory($groups, $resource->category_id)) {
-                    $smarty->assign([
-                        'DOWNLOAD' => $resource_language->get('resources', 'download'),
-                        'DOWNLOAD_URL' => URL::build('/resources/resource/' . $resource->id . '-' . URL::urlSafe($resource->name) . '/', 'do=download')
-                    ]);
+                if($user->isLoggedIn()){
+                    // Can the user download?
+                    if ($resources->canDownloadResourceFromCategory($groups, $resource->category_id)) {
+                        $smarty->assign([
+                            'DOWNLOAD' => $resource_language->get('resources', 'download'),
+                            'DOWNLOAD_URL' => URL::build('/resources/resource/' . $resource->id . '-' . URL::urlSafe($resource->name) . '/', 'do=download')
+                        ]);
+                    }
+                } else {
+                    $smarty->assign('LOG_IN_TO_DOWNLOAD', $resource_language->get('resources', 'log_in_to_download'));
                 }
             } else {
                 // Can the user download?
