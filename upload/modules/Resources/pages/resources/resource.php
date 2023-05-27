@@ -308,6 +308,12 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
     // Get Reviews Count
     $reviews = DB::getInstance()->query('SELECT COUNT(*) AS c FROM nl2_resources_comments WHERE resource_id = ? AND hidden = 0', [$resource->id])->first()->c;
 
+    if ($resource->discount >= 0 and $resource->discount < 100) {
+        $smarty->assign(array(
+            'RESOURCE_DISCOUNT' => $resource->discount
+        ));
+    }
+
     // Assign Smarty variables
     $smarty->assign([
         'VIEWING_RESOURCE' => $resource_language->get('resources', 'viewing_resource', ['resource' => Output::getClean($resource->name)]),
@@ -442,7 +448,8 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
                         } else if($paid->status == 2 || $paid->status == 3){
                             // Cancelled
                             $smarty->assign([
-                                'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean($resource->price) . ' ' . Output::getClean($currency)]),
+                                'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' =>  ($resource->discount > 0
+                                    ? '<small><s>' . $resource->price . '</s></small> ' . Output::getClean(Resources::getPricePercent($resource->price, $resource->discount)) : $resource->price) . ' ' . Output::getClean($currency)]),
                                 'PURCHASE_LINK' => URL::build('/resources/purchase/' . Output::getClean($resource->id) . '-' . Output::getClean(URL::urlSafe($resource->name)))
                             ]);
 
@@ -450,7 +457,8 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
                     } else {
                         // Needs to purchase
                         $smarty->assign([
-                            'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean($resource->price) . ' ' . Output::getClean($currency)]),
+                            'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' =>  ($resource->discount > 0
+                                ? '<small><s>' . $resource->price . '</s></small> ' . Output::getClean(Resources::getPricePercent($resource->price, $resource->discount)) : $resource->price) . ' ' . Output::getClean($currency)]),
                             'PURCHASE_LINK' => URL::build('/resources/purchase/' . Output::getClean($resource->id) . '-' . Output::getClean(URL::urlSafe($resource->name)))
                         ]);
                     }
@@ -459,7 +467,7 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
 
         } else {
             $smarty->assign([
-                'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean($resource->price) . ' ' . $currency])
+                'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean(Resources::getPricePercent($resource->price, $resource->discount)) . ' ' . $currency])
             ]);
         }
     }
@@ -710,7 +718,8 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
                                 } else if($paid->status == 2){
                                     // Cancelled
                                     $smarty->assign([
-                                        'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean($resource->price) . ' ' . Output::getClean($currency)]),
+                                        'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' =>  ($resource->discount > 0
+                                            ? '<small><s>' . $resource->price . '</s></small> ' . Output::getClean(Resources::getPricePercent($resource->price, $resource->discount)) : $resource->price) . ' ' . Output::getClean($currency)]),
                                         'PURCHASE_LINK' => URL::build('/resources/purchase/' . Output::getClean($resource->id) . '-' . Output::getClean(URL::urlSafe($resource->name)))
                                     ]);
 
@@ -718,7 +727,8 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
                             } else {
                                 // Needs to purchase
                                 $smarty->assign([
-                                    'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean($resource->price) . ' ' . Output::getClean($currency)]),
+                                    'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' =>  ($resource->discount > 0
+                                        ? '<small><s>' . $resource->price . '</s></small> ' . Output::getClean(Resources::getPricePercent($resource->price, $resource->discount)) : $resource->price) . ' ' . Output::getClean($currency)]),
                                     'PURCHASE_LINK' => URL::build('/resources/purchase/' . Output::getClean($resource->id) . '-' . Output::getClean(URL::urlSafe($resource->name)))
                                 ]);
                             }
@@ -904,7 +914,8 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
                             } else if($paid->status == 2){
                                 // Cancelled
                                 $smarty->assign([
-                                    'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean($resource->price) . ' ' . Output::getClean($currency)]),
+                                    'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' =>  ($resource->discount > 0
+                                        ? '<small><s>' . $resource->price . '</s></small> ' . Output::getClean(Resources::getPricePercent($resource->price, $resource->discount)) : $resource->price) . ' ' . Output::getClean($currency)]),
                                     'PURCHASE_LINK' => URL::build('/resources/purchase/' . Output::getClean($resource->id) . '-' . Output::getClean(URL::urlSafe($resource->name)))
                                 ]);
                             }
@@ -1187,7 +1198,8 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
                                 } else if($paid->status == 2 || $paid->status == 3){
                                     // Cancelled
                                     $smarty->assign([
-                                        'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean($resource->price) . ' ' . Output::getClean($currency)]),
+                                        'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' =>  ($resource->discount > 0
+                                            ? '<small><s>' . $resource->price . '</s></small> ' . Output::getClean(Resources::getPricePercent($resource->price, $resource->discount)) : $resource->price) . ' ' . Output::getClean($currency)]),
                                         'PURCHASE_LINK' => URL::build('/resources/purchase/' . Output::getClean($resource->id) . '-' . Output::getClean(URL::urlSafe($resource->name)))
                                     ]);
 
@@ -1195,7 +1207,8 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
                             } else {
                                 // Needs to purchase
                                 $smarty->assign([
-                                    'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' => Output::getClean($resource->price) . ' ' . Output::getClean($currency)]),
+                                    'PURCHASE_FOR_PRICE' => $resource_language->get('resources', 'purchase_for_x', ['price' =>  ($resource->discount > 0
+                                        ? '<small><s>' . $resource->price . '</s></small> ' . Output::getClean(Resources::getPricePercent($resource->price, $resource->discount)) : $resource->price) . ' ' . Output::getClean($currency)]),
                                     'PURCHASE_LINK' => URL::build('/resources/purchase/' . Output::getClean($resource->id) . '-' . Output::getClean(URL::urlSafe($resource->name)))
                                 ]);
                             }
@@ -1729,6 +1742,15 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
                 // Can edit
                 $errors = [];
 
+                if ($resource->discount >= 0 and $resource->discount < 100) {
+                    $discount = $resource->discount;
+                    $smarty->assign(array(
+                        'RESOURCE_DISCOUNT' => $discount
+                    ));
+                } else {
+                    $discount = 0;
+                }
+
                 if(Input::exists()){
                     if(Token::check(Input::get('token'))){
                         $validation = Validate::check($_POST, [
@@ -1774,8 +1796,15 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
                         if ($validation->passed()) {
                             if($resource->type == 1 && isset($_POST['price']) && !empty($_POST['price']) && is_numeric($_POST['price']) && $_POST['price'] >= 0.01 && $_POST['price'] < 100 && preg_match('/^\d+(?:\.\d{2})?$/', $_POST['price'])){
                                 $price = number_format($_POST['price'], 2, '.', '');
-                            } else
+                            } else {
                                 $price = $resource->price;
+                            }
+
+                            if($resource->type == 1 && isset($_POST['discount']) && is_numeric($_POST['discount']) && $_POST['discount'] >= 0 && $_POST['discount'] < 100){
+                                $discount = $_POST['discount'];
+                            } else {
+                                $discount = $resource->discount;
+                            }
 
                             try {
                                 // TODO: hooks
@@ -1786,7 +1815,8 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
                                     'short_description' => Input::get('short_description'),
                                     'description' => $content,
                                     'contributors' => Input::get('contributors'),
-                                    'price' => $price
+                                    'price' => $price,
+                                    'discount' => $discount
                                 ]);
 
                                 Redirect::to(URL::build('/resources/resource/' . $resource->id . '-' . URL::urlSafe(Input::get('title'))));
@@ -1854,7 +1884,9 @@ if(!isset($_GET['releases']) && !isset($_GET['do']) && !isset($_GET['versions'])
                 $smarty->assign([
                     'PRICE' => $resource_language->get('resources', 'price'),
                     'RESOURCE_PRICE' => Output::getClean($resource->price),
-                    'CURRENCY' => $currency
+                    'CURRENCY' => $currency,
+                    'DISCOUNT' => $resource_language->get('resources', 'discount'),
+                    'RESOURCE_DISCOUNT' => Output::getClean($resource->discount)
                 ]);
             }
 
