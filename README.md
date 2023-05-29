@@ -6,7 +6,7 @@ either freely or by requiring a PayPal purchase. Users can easily add or remove 
 - NamelessMC version 2.1.0
 
 ## Installation
-- Disable Nameless-Resources module by Samerton, if present
+- BACK UP YOUR FILES. Disable Nameless-Resources module by Samerton, if present
 - Upload the contents of the **upload** directory straight into your NamelessMC installation's directory
 - Activate this module in the StaffCP -> Modules tab
 - Set up some categories and permissions in the StaffCP -> Resources tab
