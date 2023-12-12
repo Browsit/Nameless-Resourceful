@@ -159,7 +159,8 @@ if(isset($_GET['do'])){
                         $payee->setEmail($author_paypal);
 
                         $amount = new \PayPal\Api\Amount();
-                        $amount->setTotal($resource->price, $resource->discount);
+                        $newPrice = $resource->price - ($resource->price * ($resource->discount / 100));
+                        $amount->setTotal($newPrice);
                         $amount->setCurrency($currency);
 
                         $exp_id = json_decode(getExpProfileId($apiContext), true);

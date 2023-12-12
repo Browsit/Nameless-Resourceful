@@ -3,7 +3,7 @@ The Nameless-Resourceful module allows users to share zip files, GitHub projects
 either freely or by requiring a PayPal purchase. Users can easily add or remove a discount to their resources.
 
 ## Requirements
-- NamelessMC version 2.1.0
+- NamelessMC version 2.1.0 - 2.1.2 (future versions may or may not get supported)
 
 ## Installation
 - BACK UP YOUR FILES. Disable Nameless-Resources module by Samerton, if present
