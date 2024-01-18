@@ -46,7 +46,7 @@
                                         <td>
                                             <h5 class="ui image header" style="margin: 0; width: 100%;">
                                             <div class="title" style="width: 100%;">
-                                                <img src="{$resource.icon}" class="floated ui medium rounded image">
+                                                <img src="{$resource.icon}" class="floated ui mini rounded image">
                                                 <div class="content">
                                                     <a>{$resource.name}</a>
                                                     <span class="version"><small>{$resource.version}</small></span>
