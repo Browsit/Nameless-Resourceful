@@ -16,9 +16,9 @@ class Resources_Module extends Module {
         $this->_resource_language = $resource_language;
         $this->_language = $language;
 
-        $name = 'Resourceful';
+        $name = 'Resources';
         $author = '<a href="https://browsit.org/" target="_blank">Browsit</a>';
-        $module_version = '1.0.4';
+        $module_version = '1.0.5';
         $nameless_version = '2.1.0';
 
         parent::__construct($this, $name, $author, $module_version, $nameless_version);
