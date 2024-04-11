@@ -45,19 +45,20 @@
                                     <tr onclick="window.location.href='{$resource.link}'">
                                         <td>
                                             <h5 class="ui image header" style="margin: 0; width: 100%;">
-                                            <div class="title" style="width: 100%;">
-                                                <img src="{$resource.icon}" class="floated ui mini rounded image">
-                                                <div class="content">
-                                                    <a>{$resource.name}</a>
-                                                    <span class="version"><small>{$resource.version}</small></span>
-                                                    {if isset($resource.price)}
-                                                        <span class="res right floated ui mini label">{$resource.price} {$CURRENCY}</span>
-                                                        {if isset($resource.discount)}
-                                                            <span class="res green right floated ui mini label" style="margin-left:5px;">
-                                                                {$resource.discount}% off</span>
+                                                <div class="content" style="width: 100%;">
+                                                    <img src="{$resource.icon}" class="floated ui mini rounded image">
+                                                    <div class="title">
+                                                        <a>{$resource.name}</a>
+                                                        <span class="version"><small>{$resource.version}</small></span>
+                                                        {if isset($resource.price)}
+                                                            <span class="res right floated ui mini label">{$resource.price} {$CURRENCY}</span>
+                                                            {if isset($resource.discount)}
+                                                                <span class="res green right floated ui mini label" style="margin-left:5px;">
+                                                                    {$resource.discount}% off</span>
+                                                            {/if}
                                                         {/if}
-                                                    {/if}
-                                                    <br />
+                                                        <br />
+                                                    </div>
                                                     <div class="sub header">
                                                         {if $resource.short_description}
                                                             {$resource.short_description}

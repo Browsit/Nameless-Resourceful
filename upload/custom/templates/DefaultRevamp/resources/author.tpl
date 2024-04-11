@@ -16,7 +16,6 @@
                 <div class="ui divider"></div>
 
                 {if $LATEST_RESOURCES}
-
                     <table class="ui fixed single line selectable unstackable small padded res table" id="sticky-threads">
                         <thead>
                             <tr>
@@ -39,8 +38,8 @@
                                             <div class="content" style="width: 100%;">
                                                 <img src="{$resource.icon}" class="floated ui mini rounded image">
                                                 <div class="title">
-                                                    <a>{$resource.name}</a> <span
-                                                        class="version"><small>{$resource.version}</small></span>
+                                                    <a>{$resource.name}</a>
+                                                    <span class="version"><small>{$resource.version}</small></span>
                                                     {if isset($resource.price)}
                                                         <span class="res right floated ui mini label">{$resource.price} {$CURRENCY}</span>
                                                         {if isset($resource.discount)}

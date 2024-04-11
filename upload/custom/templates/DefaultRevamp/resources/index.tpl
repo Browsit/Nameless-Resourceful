@@ -23,7 +23,6 @@
                 <div class="ui divider"></div>
 
                 {if $LATEST_RESOURCES}
-
                     <table class="ui fixed single line selectable unstackable small padded res table" id="resources">
                         <thead>
                             <tr>
@@ -46,8 +45,8 @@
                                             <div class="content" style="width: 100%;">
                                                 <img src="{$resource.icon}" class="floated ui mini rounded image">
                                                 <div class="title">
-                                                    <a>{$resource.name}</a> <span
-                                                        class="version"><small>{$resource.version}</small></span>
+                                                    <a>{$resource.name}</a>
+                                                    <span class="version"><small>{$resource.version}</small></span>
                                                     {if isset($resource.price)}
                                                         <span class="res right floated ui mini label">{$resource.price} {$CURRENCY}</span>
                                                         {if isset($resource.discount)}
@@ -101,26 +100,26 @@
                     {$PAGINATION}
 
                 {else}
-                <table class="ui fixed single line selectable unstackable small padded res table" id="resources">
-                    <thead>
-                    <tr>
-                        <th class="nine wide">
-                            <h4>{$RESOURCE}</h4>
-                        </th>
-                        <th class="three wide">
-                            <h4>{$STATS}</h4>
-                        </th>
-                        <th class="five wide">
-                            <h4>{$AUTHOR}</h4>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td colspan="3">{$NO_RESOURCES}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                    <table class="ui fixed single line selectable unstackable small padded res table" id="resources">
+                        <thead>
+                        <tr>
+                            <th class="nine wide">
+                                <h4>{$RESOURCE}</h4>
+                            </th>
+                            <th class="three wide">
+                                <h4>{$STATS}</h4>
+                            </th>
+                            <th class="five wide">
+                                <h4>{$AUTHOR}</h4>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="3">{$NO_RESOURCES}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 {/if}
             </div>
             <div class="four wide column">
